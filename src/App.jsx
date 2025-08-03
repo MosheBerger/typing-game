@@ -1,4 +1,4 @@
-import { createSignal, For, Show } from 'solid-js'
+import { createSignal, For, onMount, Show } from 'solid-js'
 import './app.css'
 import LetterButton from './components/LetterButton'
 import { effect } from 'solid-js/web'
@@ -11,12 +11,19 @@ const hebrewLetters = [
 
 
 function App() {
-
 	const [question, setQuestion] = createSignal('טליה')
 	const [answer, setAnswer] = createSignal('')
 	const [currentLetter, setCurrentLetter] = createSignal('')
 	const [isCorrect, setIsCorrect] = createSignal(undefined)
 	const [win, setWin] = createSignal(false)
+
+	onMount(() => {
+		const searchParams = new URLSearchParams(window.location.search);
+		const questionParam = searchParams.get('q');
+		if (questionParam) {
+			setQuestion(questionParam);
+		}
+	})
 
 	const handleClickLetter = (letter) => {
 		console.log('currentLetter', currentLetter())
